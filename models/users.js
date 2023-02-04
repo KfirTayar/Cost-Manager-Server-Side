@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Creating a schema for users in mongoDB
 const UsersSchema = new Schema({
     _id : {
         type : Number
@@ -19,8 +20,38 @@ const UsersSchema = new Schema({
 
 });
 
+const User = mongoose.model('users', UsersSchema);
 
+// Define default user properties
+const defaultUser = {
+    id : 123123,
+    first_name: 'moshe',
+    last_name: 'israeli',
+    birthday: new Date("January,10,1990").toDateString(),
+};
 
-const Users = mongoose.model('users', UsersSchema);
+// Creates a default user
+async function createNewUser() {
+    try {
+        // Checks if there is a current user
+        const currentUser = await User.findOne({id: defaultUser.id});
+        if (currentUser) {
+            console.log(`Current user: ${currentUser}`);
+            return currentUser;
+        }
+        // If there is no current user, we create him
+        const newUser = await User.create(defaultUser);
+        console.log(`New user created: ${newUser}`);
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        console.log('The user in the DB');
+    }
+}
 
-module.exports = Users;
+// Checking the existence of the user in every running of the program
+createNewUser();
+
+module.exports = User;

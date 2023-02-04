@@ -1,47 +1,52 @@
 const express = require('express');
 const router = express.Router();
-const Costs = require('../models/costs');
+const Cost = require('../models/costs');
 
-// POST method for adding cost using Curl
-// REQ => curl -X POST http://localhost:3000/addcost -H "Content-Type: application/json" -d "{\"user_id\":123123,\"year\":1990,\"month\":5,\"day\":10,\"description\":\"pizza\",\"sum\":50,\"category\":\"food\"}"
+// The request sending in method POST
 router.post('/', (req, res, next) =>{
 
-    const user_id = 123123;
+    // Preparing the parameters to create a  new cost
+    const user_id = 123123; // Permanent user_id
     const year = req.body.year;
     const month = req.body.month;
     const day = req.body.day;
+    const id = "id" + Math.random().toString(16).slice(2); // Generates a unique id for every cost item
     const description = req.body.description;
     const category = req.body.category;
     const sum = req.body.sum;
 
-    const currentCost = new Costs({
+    // Checks if there is an empty property
+    if ( !year || !month || !day || !description || !category || !sum){
+        return res.status(400).json({ error : 'One or more of the properties do not exist'});
+    }
+    // Validates the input of the month property
+    if (month > 31){
+        return res.status(400).json({error: 'The month property has invalid input'});
+    }
+    // Validates the input of the day property
+    if (day > 31){
+        return res.status(400).json({error: 'The day property has invalid input'});
+    }
+    // Validates the input of the category property
+    const categoryOptions = ["food", "health", "housing", "sport", "education", "transportation", "other"];
+    if (!(categoryOptions.includes(category))){
+        return res.status(400).json({ error: "The category property has invalid input" });
+    }
+
+    // Building a new cost item
+    const currentCost = new Cost({
         user_id:user_id,
         year:year,
         month:month,
         day:day,
+        id:id,
         description:description,
         category:category,
-        sum:sum,
-        });
+        sum:sum
+    });
 
-    if ( !year || !month || !day || !description || !category || !sum){
-        return res.status(400).json({ error : 'Missing required parms'});
-    }
-
-    if (month > 31){
-        return res.status(400).json({error: 'Invalid input for month'});
-    }
-
-    if (day > 31){
-        return res.status(400).json({error: 'Invalid input for day'});
-    }
-
-    const categoryOptions = ["food", "health", "housing", "sport", "education", "transportation", "other"];
-    if (!(categoryOptions.includes(category))){
-        return res.status(400).json({ error: "Invalid input for category" });
-    }
-
-    Costs.create(currentCost).then( (currentCost) => {
+    // Creating a new cost document
+    Cost.create(currentCost).then( (currentCost) => {
         res.send(`New cost created: ${currentCost}`);
     }).catch(next);
 });

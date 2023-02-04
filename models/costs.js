@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Creating a schema for costs in mongoDB
 const CostsSchema = new Schema({
 
     user_id : {
@@ -19,6 +20,10 @@ const CostsSchema = new Schema({
         type : Number
     },
 
+    id:{
+        type: String
+    },
+
     description : {
         type : String
     },
@@ -32,6 +37,6 @@ const CostsSchema = new Schema({
     }
 });
 
-const Costs = mongoose.model('costs', CostsSchema);
+const Cost = mongoose.model('costs', CostsSchema);
 
-module.exports = Costs;
+module.exports = Cost;

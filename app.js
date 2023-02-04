@@ -12,11 +12,10 @@ const usersRouter = require('./routes/users');
 const addcostRouter = require('./routes/addcost');
 const reportRouter = require('./routes/report');
 const aboutRouter = require('./routes/about');
-const {static} = require("express");
 
 const app = express();
 
-// Connect to mongodb
+// Connect to mongoDB
 mongoose.connect('mongodb://localhost:27017/costmanager');
 
 // view engine setup
@@ -34,34 +33,6 @@ app.use('/users', usersRouter);
 app.use('/addcost', addcostRouter);
 app.use('/report', reportRouter);
 app.use('/about', aboutRouter);
-
-const defaultUser = {
-  _id : 123123,
-  first_name: 'moshe',
-  last_name: 'israeli',
-  birthday: new Date("January,10,1990").toDateString(),
-};
-
-// create a default user
-async function createNewUser() {
-  try {
-    // check if there is a current user
-    const currentUser = await Users.findOne({id: defaultUser._id});
-    if (currentUser) {
-      console.log(`Current user: ${currentUser}`);
-      console.log('User already exists, not creating');
-      return currentUser;
-    }
-    // if there is no current user => we create him
-    const addedUser = await Users.create(defaultUser);
-    console.log(`New user created: ${addedUser}`);
-  }
-  catch (error) {
-    console.log(error);
-  }
-}
-// we check the user in every running of the program
-createNewUser();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
