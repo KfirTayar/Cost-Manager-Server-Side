@@ -1,22 +1,21 @@
 # Cost-Manager-Server-Side-RESTfull-webservice
 
-## Introduction
 This project is a RESTful web service for managing daily costs. The service is built using a MongoDB database and Express.js, and allows users to add new cost items and retrieve detailed reports of their expenses.
 
+The cost Manager App is used for tracking your daily costs due the years. You can get a report for every
+month and it assists you to plan your budget and spending money in order way.
+
 ## Database
-The MongoDB database is organized into two collections: "users" and "costs". The "users" collection holds documents that include the following properties: id, first_name, last_name, and birthday. The "costs" collection holds documents that include the following properties: user_id, year, month, day, id, description, category, and sum.
-The database is empty, except for a single document in the "users" collection, which includes the details of an imaginary user with the following data:
+* Data is stored in MongoDB with the following features:
+1. DB name: CostManager.
+2. DB collections: ***"users" and "costs".
+3. collections properties: users: id, firstname, lastname, and birthday. costs: user_id, year, month, day, description, sum and category.
 
-#### Demo User
-`id: 123123
-first_name: moshe
-last_name: israeli
-birthday: January, 10th, 1990`
-
-The costs are organized according to categories: food, health, housing, sport, education, transportation, and other.
+#### Default User (automaticly created in "users" collection)
+`id: 123123 first_name: moshe last_name: israeli birthday: wed Jan, 10, 1990`
 
 ## Application
-The application is built using Express.js and runs on the server side. It includes the following RESTful web services endpoints:
+The application is built using Express.js and runs on the server side. It includes the following routes:
 
 1. /addcost/ for adding a new cost item using the POST method. The parameters include: user_id, year, month, day, description, category, and sum. The category must be one of the available options.
 
