@@ -1,24 +1,35 @@
-# Cost-Manager-Server-Side-RESTfull-webservice
+# Cost-Manager-Server-Side-REStful Web Services
 
-This project is a RESTful web service for managing daily costs. The service is built using a MongoDB database and Express.js, and allows users to add new cost items and retrieve detailed reports of their expenses.
-
-The cost Manager App is used for tracking your daily costs due the years. You can get a report for every
+This app is a RESTfull web service that used for tracking your daily costs due the years. You can get a report for every
 month and it assists you to plan your budget and spending money in order way.
 
 ## Database
-* Data is stored in MongoDB with the following features:
-1. DB name: CostManager.
-2. DB collections: ***"users" and "costs".
-3. collections properties: users: id, firstname, lastname, and birthday. costs: user_id, year, month, day, description, sum and category.
+* Data is stored in **MongoDB** with the following features:
+1. DB name: ***"costmanager"***.
+2. DB collections: There are two collection that created, ***"users"*** with the properties: **id, firstname, lastname, and birthday** and<br/> ***"costs"***
+with the properties: **user_id, year, month, day, description, sum and category**.
 
 #### Default User (automaticly created in "users" collection)
 `id: 123123 first_name: moshe last_name: israeli birthday: wed Jan, 10, 1990`
 
 ## Application
-The application is built using Express.js and runs on the server side. It includes the following routes:
+The application is built using **Express.js** and runs on the server side. It includes the following routes:
 
-1. /addcost/ for adding a new cost item using the POST method. The parameters include: user_id, year, month, day, description, category, and sum. The category must be one of the available options.
+1. /addcost/ for inserting a cost (using POST method) according to the parameters: **user_id, year, month, day, description, sum and category**.
+The user must insert the parameters: **sum, category, and description**.
 
-2. /report/ for getting a detailed report (in JSON) of costs for a specific month and year, using the GET method. The parameters include: user_id, month, and year. The returned JSON document includes an object with properties for each category, whose values are arrays of objects describing cost items.
+* Example for cost request in POST (Using Curl):
+```
+curl -X POST http://localhost:3000/addcost -H "Content-Type: application/json" -d "{\"user_id\":123123,\"year\":1850,\"month\":\"may\",\"day\":10,\"description\":\"pizza\",\"sum\":50,\"category\":\"food\"}"
+```
+If you don't enter one of the must parameters, the cost wasn't add and you get an error.
 
-3. /about/ for getting a detailed report (in JSON) of the devs names and emails
+2. /report/ for getting a filtered report (using GET method) by the parameters: **year, month and user_id**. The reports gets in JSON 
+and includ the documents sorted by the categories.
+
+* Example for report request in GET:
+```
+http://localhost:3000/report?year=1850&month=may&user_id=123123
+```
+
+3. /about/ for getting a report in JSON about team members.
