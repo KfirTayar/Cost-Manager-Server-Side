@@ -19,13 +19,14 @@ const aboutRouter = require('./routes/about');
 const app = express();
 
 // Connect to mongoDB
-// mongoose.connect('mongodb://localhost:27017/costmanager');
 mongoose.connect('mongodb+srv://Karinmashkovich:nIKYbDh7C40XZ4iP@cluster0.zn50q0z.mongodb.net/costmanager?retryWrites=true&w=majority');
 
 // Checking if the DB is/isn't connected
 const db = mongoose.connection;
 db.on('error', function() {console.log("The DB is not connected!")});
 db.once('open', function() {console.log("The DB is connected!")});
+
+mongoose.set('strictQuery', false);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
