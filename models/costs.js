@@ -1,3 +1,6 @@
+// Kfir Tayar 208991430
+// Karin Mashkovich 313512428
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -13,7 +16,7 @@ const CostsSchema = new Schema({
     },
 
     month : {
-        type : String
+        type : Number
     },
 
     day : {

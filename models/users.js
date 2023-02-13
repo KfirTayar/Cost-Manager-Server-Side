@@ -1,9 +1,12 @@
+// Kfir Tayar 208991430
+// Karin Mashkovich 313512428
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Creating a schema for users in mongoDB
 const UsersSchema = new Schema({
-    _id : {
+    id : {
         type : Number
     },
 
@@ -46,12 +49,9 @@ async function createNewUser() {
     catch (error) {
         console.log(error);
     }
-    finally {
-        console.log('The user in the DB');
-    }
 }
 
 // Checking the existence of the user in every running of the program
-createNewUser();
+createNewUser().then().catch();
 
 module.exports = User;

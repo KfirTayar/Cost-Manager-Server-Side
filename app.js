@@ -1,3 +1,6 @@
+// Kfir Tayar 208991430
+// Karin Mashkovich 313512428
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -5,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-const Users = require('./models/users');
+const User = require('./models/users');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -16,7 +19,13 @@ const aboutRouter = require('./routes/about');
 const app = express();
 
 // Connect to mongoDB
-mongoose.connect('mongodb://localhost:27017/costmanager');
+// mongoose.connect('mongodb://localhost:27017/costmanager');
+mongoose.connect('mongodb+srv://Karinmashkovich:nIKYbDh7C40XZ4iP@cluster0.zn50q0z.mongodb.net/costmanager?retryWrites=true&w=majority');
+
+// Checking if the DB is/isn't connected
+const db = mongoose.connection;
+db.on('error', function() {console.log("The DB is not connected!")});
+db.once('open', function() {console.log("The DB is connected!")});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
