@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
         }
         else {
             if (report) {
-                return res.json(report.computedreports);
+                return res.json(report.computedReport);
             }
             res.status(400).json({error: 'There is no costs in this date'});
         }
