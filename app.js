@@ -27,6 +27,8 @@ const db = mongoose.connection;
 db.on('error', function() {console.log('The DB is not connected!')});
 db.once('open', function() {console.log('The DB is connected!')});
 
+mongoose.set('strictQuery', false);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
