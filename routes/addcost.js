@@ -80,15 +80,15 @@ router.post('/', (req, res, next) =>{
             // If the report exists in the computed reports' schema, we update the report
             if (report) {
                 // Prepares the updated report
-                report.computedreports[currentCost.category].push({
+                report.computedReport[currentCost.category].push({
                     day: currentCost.day,
                     description: currentCost.description,
                     sum: currentCost.sum
                 });
                 // Updated report
-                const updatedReport = (report.computedreports);
+                const updatedReport = (report.computedReport);
                 // Update the current report in the computed reports schema
-                Report.updateOne({ name: reportName }, { $set: { computedreports: updatedReport } },
+                Report.updateOne({ name: reportName }, { $set: { computedReport: updatedReport } },
                     function(err) {
                     if (err) throw err;
                     console.log('1 document updated');
