@@ -4,6 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const Cost = require('../models/costs');
+const Report = require('../models/comutedReports');
 
 // The request sending in method POST
 router.post('/', (req, res, next) =>{
@@ -13,7 +14,7 @@ router.post('/', (req, res, next) =>{
     const year = req.body.year;
     const month = req.body.month;
     const day = req.body.day;
-    const id = "id" + Math.random().toString(16).slice(2); // Generates a unique id for every cost item
+    const id = 'id' + Math.random().toString(16).slice(2); // Generates a unique id for every cost item
     const description = req.body.description;
     const category = req.body.category;
     const sum = req.body.sum;
@@ -29,11 +30,10 @@ router.post('/', (req, res, next) =>{
     }
 
     // Validates the input of the category property
-    const categoryOptions = ["food", "health", "housing", "sport",
-        "education", "transportation", "other"];
+    const categoryOptions = ['food', 'health', 'housing', 'sport', 'education', 'transportation', 'other'];
 
     if (!(categoryOptions.includes(category))){
-        return res.status(400).json({ error: "The category property has invalid input" });
+        return res.status(400).json({ error: 'The category property has invalid input' });
     }
 
     // Validates the input of the month property
@@ -53,20 +53,74 @@ router.post('/', (req, res, next) =>{
 
     // Building a new cost item
     const currentCost = new Cost({
-        user_id:user_id,
-        year:year,
-        month:month,
-        day:day,
-        id:id,
-        description:description,
-        category:category,
-        sum:sum
+        user_id: user_id,
+        year: year,
+        month: month,
+        day: day,
+        id: id,
+        description: description,
+        category: category,
+        sum: sum
     });
 
     // Creating a new cost document
     Cost.create(currentCost).then( (currentCost) => {
         res.send(`New cost created: ${currentCost}`);
     }).catch(next);
+
+    // Add the currentCost to a new report or an existing report
+    // Create a name for the computed report
+    const reportName = '' + year + month + user_id;
+
+    Report.findOne({'name':reportName} , (error, report) => {
+        if (error) {
+            res.status(500).json({error: error});
+        }
+        else {
+            // If the report exists in the computed reports' schema, we update the report
+            if (report) {
+                // Prepares the updated report
+                report.computedReport[currentCost.category].push({
+                    day: currentCost.day,
+                    description: currentCost.description,
+                    sum: currentCost.sum
+                });
+                // Updated report
+                const updatedReport = (report.computedReport);
+                // Update the current report in the computed reports schema
+                Report.updateOne({ name: reportName }, { $set: { computedReport: updatedReport } },
+                    function(err) {
+                    if (err) throw err;
+                    console.log('1 document updated');
+                });
+            }
+            else {
+                // If there is no computed report for the current date, we will create him
+                const newReport = {};
+                const categories = ['food','health','housing','sport','education','transportation','other'];
+                newReport[categories[0]] = [];
+                newReport[categories[1]] = [];
+                newReport[categories[2]] = [];
+                newReport[categories[3]] = [];
+                newReport[categories[4]] = [];
+                newReport[categories[5]] = [];
+                newReport[categories[6]] = [];
+
+                newReport[currentCost.category].push({
+                    day: currentCost.day,
+                    description: currentCost.description,
+                    sum: currentCost.sum
+                });
+
+                const currentReport = new Report ({
+                    name: reportName,
+                    computedReport: newReport
+                });
+
+                Report.create(currentReport).then().catch(next);
+            }
+        }
+    });
 });
 
 module.exports = router;

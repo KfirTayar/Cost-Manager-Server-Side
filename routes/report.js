@@ -3,54 +3,31 @@
 
 const express = require('express');
 const router = express.Router();
-const Cost = require('../models/costs');
+const Report = require('../models/comutedReports');
 
 // The request sending in method GET
 router.get('/', (req, res) => {
-    const { year, month, user_id } = req.query; // Getting the parameters from the query string
+    const {year, month, user_id} = req.query; // Getting the parameters from the query string
 
     // Checks if user_id is empty
-    if ( !user_id ){
-        return res.status(400).json({ error : 'user_id required for getting a report'});
+    if ( !year || !month || !user_id ) {
+        return res.status(400).json({error: 'One or more of the required properties do not exist'});
     }
-    // Finding the costs according to the sending parameters
-    Cost.find({ year, month, user_id }, (error, costs) => {
+
+    // Create a name for the computed report
+    const reportName = '' + year + month + user_id;
+
+    // Checks if there is a computed report for this date
+    Report.findOne({'name': reportName}, (error, report) => {
         if (error) {
-            res.status(400).json({ error: 'One or more of the inputs in the query string is not valid!'});
+            res.status(500).json({error: error});
         }
         else {
-
-            // Creates an empty object for the final report
-            const report = {};
-
-            // Creates empty arrays for each category
-            let i=0;
-            const categories = ['food','health','housing','sport','education','transportation','other'];
-            report[categories[0]] = [];
-            report[categories[1]] = [];
-            report[categories[2]] = [];
-            report[categories[3]] = [];
-            report[categories[4]] = [];
-            report[categories[5]] = [];
-            report[categories[6]] = [];
-
-            // Using while loop to iterate each cost
-            while (costs[i] != null)  {
-                // Validates the input of the category property
-                if (categories.includes(costs[i].category)) {
-                    // Pushing the cost to the correct category
-                    report[costs[i].category].push({
-                        day: costs[i].day,
-                        description: costs[i].description,
-                        sum: costs[i].sum
-                    });
-                }
-                i += 1;
+            if (report) {
+                return res.json(report.computedReport);
             }
-            // Export the JSON report
-            res.json(report);
+            res.status(400).json({error: 'There is no costs in this date'});
         }
     });
 });
-
 module.exports = router;

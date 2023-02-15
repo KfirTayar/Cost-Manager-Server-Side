@@ -1,11 +1,11 @@
 // Kfir Tayar 208991430
 // Karin Mashkovich 313512428
 
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
 

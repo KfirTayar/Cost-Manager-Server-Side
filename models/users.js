@@ -17,6 +17,7 @@ const UsersSchema = new Schema({
     last_name : {
         type : String
     },
+
     birthday : {
         type : String
     }
@@ -30,7 +31,7 @@ const defaultUser = {
     id : 123123,
     first_name: 'moshe',
     last_name: 'israeli',
-    birthday: new Date("January,10,1990").toDateString(),
+    birthday: new Date('January,10,1990').toDateString(),
 };
 
 // Creates a default user
@@ -52,6 +53,6 @@ async function createNewUser() {
 }
 
 // Checking the existence of the user in every running of the program
-createNewUser().then().catch();
+createNewUser().then().catch(function (error){console.log("User creation failed")});
 
 module.exports = User;
