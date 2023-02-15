@@ -3,7 +3,7 @@
 
 const express = require('express');
 const router = express.Router();
-const Report = require('../models/comutedReports');
+const Report = require('../models/computedReports');
 
 // The request sending in method GET
 router.get('/', (req, res) => {
