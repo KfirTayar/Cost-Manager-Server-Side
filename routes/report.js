@@ -3,7 +3,7 @@
 
 const express = require('express');
 const router = express.Router();
-const Report = require('../models/computedReports');
+const Report = require('../models/computedreports');
 
 // The request sending in method GET
 router.get('/', (req, res) => {
@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
         }
         else {
             if (report) {
-                return res.json(report.computedReport);
+                return res.json(report.computedreports);
             }
             res.status(400).json({error: 'There is no costs in this date'});
         }

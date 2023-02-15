@@ -4,7 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const Cost = require('../models/costs');
-const Report = require('../models/computedReports');
+const Report = require('../models/computedreports');
 
 // The request sending in method POST
 router.post('/', (req, res, next) =>{
@@ -80,15 +80,15 @@ router.post('/', (req, res, next) =>{
             // If the report exists in the computed reports' schema, we update the report
             if (report) {
                 // Prepares the updated report
-                report.computedReport[currentCost.category].push({
+                report.computedreports[currentCost.category].push({
                     day: currentCost.day,
                     description: currentCost.description,
                     sum: currentCost.sum
                 });
                 // Updated report
-                const updatedReport = (report.computedReport);
+                const updatedReport = (report.computedreports);
                 // Update the current report in the computed reports schema
-                Report.updateOne({ name: reportName }, { $set: { computedReport: updatedReport } },
+                Report.updateOne({ name: reportName }, { $set: { computedreports: updatedReport } },
                     function(err) {
                     if (err) throw err;
                     console.log('1 document updated');

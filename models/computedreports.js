@@ -17,6 +17,6 @@ const ComputedReportsSchema = new Schema({
 
 });
 
-const Report = mongoose.model('computedReports', ComputedReportsSchema);
+const Report = mongoose.model('computedreports', ComputedReportsSchema);
 
 module.exports = Report;
