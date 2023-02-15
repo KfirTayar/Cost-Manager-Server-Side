@@ -4,7 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const Cost = require('../models/costs');
-const Report = require('../models/comutedReports');
+const Report = require('../models/computedReports');
 
 // The request sending in method POST
 router.post('/', (req, res, next) =>{
