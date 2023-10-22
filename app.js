@@ -1,5 +1,4 @@
-// Kfir Tayar 208991430
-// Karin Mashkovich 313512428
+// Kfir Tayar
 
 const createError = require('http-errors');
 const express = require('express');
@@ -20,7 +19,7 @@ const app = express();
 
 // Connect to mongoDB
 //mongoose.connect('mongodb://localhost:27017/costmanager');
-mongoose.connect('mongodb+srv://Karinmashkovich:nIKYbDh7C40XZ4iP@cluster0.zn50q0z.mongodb.net/costmanager?retryWrites=true&w=majority');
+mongoose.connect('');
 
 // Checking if the DB is/isn't connected
 const db = mongoose.connection;
