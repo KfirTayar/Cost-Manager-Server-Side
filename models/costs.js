@@ -1,5 +1,4 @@
-// Kfir Tayar 208991430
-// Karin Mashkovich 313512428
+// Kfir Tayar
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
