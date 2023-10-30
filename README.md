@@ -3,7 +3,7 @@
 This app provides a RESTful web service for tracking your daily costs through the years.</br>By using this app, you can add costs and get a report which helps you plan your budget and spend money effectively.
 
 ## Database
-* Data is stored in **MongoDB**:
+* Data is stored in **MongoDB** and implemented with **Computed pattern**.
 1. DB name: ***"costmanager"***.
 2. DB collections: There are two collections: ***"users"*** with the properties: **id, firstname, lastname, and birthday**<br/> and ***"costs"***
 with the properties: **user_id, year, month, day, description, sum, and category**.
